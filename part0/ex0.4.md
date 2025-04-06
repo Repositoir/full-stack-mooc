@@ -1,6 +1,6 @@
 # Answer to Exercise 0.4
 
-## MOOC Full Stack Open
+## MOOC Full Stack Open 2025
 
 ```mermaid
 sequenceDiagram
@@ -29,7 +29,7 @@ sequenceDiagram
     server-->>browser: Javascript File
     deactivate server
 
-    Note right of browser: Javascript file gets executed and performs a GET request on the JSON from the server
+    Note right of browser: Javascript file gets executed and performs a GET request for the JSON from the server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
