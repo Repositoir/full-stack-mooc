@@ -1,35 +1,94 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const Button = (props) => {
+    const [value, setValue] = props.values;
+    const btnName = props.name;
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <>
+            <button onClick={() => setValue(value + 1)}>{btnName}</button>
+        </>
+    );
 }
 
-export default App
+const StatisticLine = (props) => {
+
+    // handle percentage sign
+    const percentageSign = () => {
+        if (props.text === "positive"){
+            return " %";
+        } else {
+            return "";
+        }
+    }
+
+    return (
+        <>
+            <td>{props.text}</td>
+            <td>{props.value}{percentageSign()}</td>
+        </>
+    );
+}
+
+const Statistics = (props) => {
+    const [good, neutral, bad] = props.stats;
+
+    if (good === 0 && neutral === 0 && bad === 0){
+        return (
+            <>
+                <p>No feedback given</p>
+            </>
+        )
+    }
+
+    const total = good + neutral + bad;
+    const average = (good - bad) / total;
+    const positive = (good / total) * 100;
+
+    return (
+        <>
+            <table>
+                <tbody>
+                <tr>
+                    <StatisticLine text="good" value={good} />
+                </tr>
+                <tr>
+                    <StatisticLine text="neutral" value={neutral} />
+                </tr>
+                <tr>
+            <StatisticLine text="bad" value={bad} />
+                </tr>
+                <tr>
+            <StatisticLine text="all" value={total} />
+                </tr>
+                <tr>
+            <StatisticLine text="average" value={parseFloat(average.toString()).toFixed(1)} />
+                </tr>
+                <tr>
+            <StatisticLine text="positive" value={parseFloat(positive.toString()).toFixed(1)} />
+                </tr>
+                </tbody>
+            </table>
+        </>
+    );
+}
+
+const App = () => {
+    // save clicks of each button to its own state
+    const [good, setGood] = useState(0)
+    const [neutral, setNeutral] = useState(0)
+    const [bad, setBad] = useState(0)
+
+    return (
+        <div>
+            <h1>give feedback</h1>
+            <Button name="good" values={[good, setGood]} />
+            <Button name="neutral" values={[neutral, setNeutral]} />
+            <Button name="bad" values={[bad, setBad]} />
+            <h1>statistics</h1>
+            <Statistics stats={[good, neutral, bad]} />
+        </div>
+    );
+}
+
+export default App;
